@@ -4,5 +4,10 @@
   },
   "dependencies": {
     "daisyui": "^2.13.6"
+  },
+  "name": "demo",
+  "scripts": {
+    "twsw": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
   }
+
 }
