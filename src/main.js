@@ -1,186 +1,18 @@
-const config = {
+import { Items } from "./items.js";
+import { User } from "./user.js";
+import { View } from "./view.js";
+
+
+
+export const config = {
 	"initialPage": document.getElementById("initialPage"),
 	"mainPage": document.getElementById("mainPage")
 };
 
-class User {
-	constructor(name, age, days, money, items) {
-		this.name = name;
-		this.age = age;
-		this.days = days;
-		this.money = money;
-		this.clickCount = 0;//ハンバーガーをクリックした回数
-		this.incomePerClick = 25;//一回ハンバーガーをクリックしたら取得できる金額
-		this.incomePerSec = 0;//itemの中で一秒間に自動的に取得できる金額
-		this.stock = 0;//ETFを買った場合の取得できるストック
-		this.items = items;
-	}
-}
-class Items {
-	constructor(name, type, currentAmount, maxAmount, perMoney, perRate, price, url) {
-		this.name = name;
-		this.type = type;
-		this.currentAmount = currentAmount;
-		this.maxAmount = maxAmount;
-		this.perMoney = perMoney;
-		this.perRate = perRate;
-		this.price = price;
-		this.url = url;
-	}
-}
-class View {
-	static createInitialPage() {
-		let container = document.createElement("div");
-		container.classList.add("h-1/1", "w-9/12", "bg-amber-400", "flex", "justify-center", "items-center");
-		config.initialPage.classList.add("h-full", "w-full", "flex", "justify-center", "items-center")
-		container.innerHTML =
-			`
-			<div>
-				<div class="my-5 w-full text-center text-3xl font-light">
-					<p>Have fun the ClickerEmpireGame</p>
-				</div>
-						<div class="flex justify-center">
-								<div class="py-5 w-1/2 ">
-						<div class="py-5 text-center">
-							<input type="text" placeholder="Enter your name" value="aoba">
-						</div>
-						<div class="flex justify-around">
-							<button id="newBtn" class="btn btn-success hover:text-white">NEW</button>
-							<button id="loginBtn" class="btn btn-success hover:text-white">LOGIN</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			`
-		return config.initialPage.append(container);
-	}
 
-	static createMainPage(user) {
-		let container = document.createElement("div");
-		container.classList.add("h-1/1", "w-11/12", "bg-amber-300", "grid", "grid-cols-2");
+export class Controller {
+	timer;
 
-		container.innerHTML =
-			`
-				<div class="col-span-1 ">
-					<div id="burgerStatus" class="h-full"></div>
-				</div>
-				<div class="col-span-1 bg-amber-300">
-					<div class="h-full grid grid-rows-6">
-						<div id="userInfo" class="row-span-1">
-
-						</div>
-						<div id="purchaseList" class="h-1/2 row-span-5 px-3 py-3">
-
-						</div>
-					</div>
-				</div>
-			`
-
-		container.querySelectorAll("#burgerStatus")[0].append(View.createBurgerStatus(user));
-		container.querySelectorAll("#userInfo")[0].append(View.createUserInfo(user));
-		container.querySelectorAll("#purchaseList")[0].append(View.createPurchaseList(user));
-
-
-		return container;
-
-	}
-
-	static createBurgerStatus(user) {
-		let container = document.createElement("div");
-		container.classList.add("h-full", "grid", "grid-rows-6");
-		container.innerHTML =
-			`
-				<div class="row-span-1 flex justify-center items-center">
-					<div>
-						<div class="text-center font-light text-red-500">
-							<p class="text-7xl">${user.clickCount} Burger</p>
-							<p class="text-2xl">one Click: ￥${user.incomePerClick}</p>
-						</div>
-					</div>
-				</div>
-				<div class="row-span-5 flex justify-center items-center">
-					<div class="h-1/2 w-1/2">
-						<img src="https://cdn.pixabay.com/photo/2014/04/02/17/00/burger-307648_960_720.png" id="burger">
-					</div>
-				</div>
-			`
-		let burgerClick = container.querySelectorAll("#burger")[0];
-		burgerClick.addEventListener("click", function () {
-			Controller.updateByBurgerClick(user);
-		})
-
-		return container;
-	}
-
-	static createUserInfo(user) {
-		let container = document.createElement("div");
-		container.classList.add("h-full", "grid", "grid-cols-2", "text-4xl", "font-light");
-		container.innerHTML =
-			`
-				<div class="text-center text-red-500 flex justify-center items-center">
-					<p>${user.name}</p>
-				</div>
-				<div class="text-center text-red-500 flex justify-center items-center">
-					<p>${user.age} yrs old</p>
-				</div>
-				<div class="text-center text-red-500 flex justify-center items-center">
-					<p>${user.days} days</p>
-				</div>
-				<div class="text-center text-red-500 flex justify-center items-center">
-					<p>￥${user.money}</p>
-				</div>
-			`
-		return container;
-	}
-
-	static createPurchaseList(user) {
-		let container = document.createElement("div");
-		container.classList.add("h-37rem", "desktop:h-60rem", "w-full", "pt-3", "px-3", "border-4", "rounded-lg", "border-red-500", "overflow-auto");
-		for (let i = 0; i < user.items.length; i++) {
-			container.innerHTML +=
-				`
-				<div
-					class="h-1/5 w-full mb-3 border-4 rounded-lg border-red-500 grid grid-cols-3 text-red-500">
-					<div class="col-span-1 flex justify-center">
-						<img src="${user.items[i].url}"
-							alt="" width="80px">
-					</div>
-					<div class="col-span-1 ">
-						<div class="h-full flex justify-center items-center">
-							<div class="text-center">
-								<p class="text-3xl">${user.items[i].name}</p>
-								<p class="text-xl">￥${user.items[i].price}</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-span-1">
-						<div class="h-full flex justify-center items-center">
-							<div class="text-center">
-								<p class="text-3xl">${user.items[i].currentAmount}</p>
-								<p class="text-xl">￥${user.items[i].incomePerSec} / sec</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			`
-		}
-		return container;
-	}
-
-	static updateByBurgerPage(user) {
-		let burgerStatus = config.mainPage.querySelectorAll("#burgerStatus")[0];
-		burgerStatus.innerHTML = "";
-		burgerStatus.append(View.createBurgerStatus(user));
-	}
-
-	static updateUserInfo(user) {
-		let userInfo = config.mainPage.querySelectorAll("#userInfo")[0];
-		userInfo.innerHTML = "";
-		userInfo.append(View.createUserInfo(user));
-	}
-}
-
-class Controller {
 	static startGame() {
 		View.createInitialPage();
 		//newBtnをクリックした時の挙動
@@ -190,7 +22,6 @@ class Controller {
 			let user = Controller.createInitialAccount(userName);//ユーザーの生成
 			Controller.moveInitialPageToMainPage(user);//initialPageからMainPageへの遷移
 		})
-
 	}
 	//ユーザーの生成
 	static createInitialAccount(userName) {
@@ -215,15 +46,33 @@ class Controller {
 	static moveInitialPageToMainPage(user) {
 		config.initialPage.classList.add("hidden");
 		config.mainPage.classList.add("h-full", "w-full", "flex", "justify-center", "items-center");
-		return config.mainPage.append(View.createMainPage(user));//MainPageの生成
+		config.mainPage.append(View.createMainPage(user));//MainPageの生成
+		// Controller.startTimer(user);
 	}
 
-	static updateByBurgerClick(user) {
-		user.clickCount++;
-		user.money += user.incomePerClick;
-		View.updateByBurgerPage(user);
-		View.updateUserInfo(user);
+	static resetMainPage(user) {
+		config.mainPage.innerHTML = "";
+		config.mainPage.append(View.createMainPage(user));
 	}
+
+	static getTotalPrice(user, item, value) {
+		let total = 0;
+		total = Math.floor(item.price * value);
+		return total;
+	}
+
+	// static startTimer(user) {
+	// 	setInterval(function () {
+	// 		user.days++;
+	// 		user.money += user.incomePerSec;
+	// 		if (user.days % 365 == 0) {
+	// 			user.age++;
+	// 			View.updateUserInfo(user);
+	// 		} else {
+	// 			View.updateUserInfo(user);
+	// 		}
+	// 	}, 1000)
+	// }
 }
 
 Controller.startGame();
