@@ -304,16 +304,24 @@ class Controller {
 		let newBtn = config.initialPage.querySelectorAll("#newBtn")[0];
 		newBtn.addEventListener("click", function () {
 			let userName = config.initialPage.querySelectorAll("input")[0].value;//ユーザーネームの取得
-			let user = Controller.createInitialAccount(userName);//ユーザーの生成
-			Controller.moveInitialPageToMainPage(user);//initialPageからMainPageへの遷移
+			if (userName == "") {
+				alert("名前を入力してください");
+			} else {
+				let user = Controller.createInitialAccount(userName);//ユーザーの生成
+				Controller.moveInitialPageToMainPage(user);//initialPageからMainPageへの遷移
+			}
 		})
 
 		let loginBtn = config.initialPage.querySelectorAll("#loginBtn")[0];
 		loginBtn.addEventListener("click", function () {
 			let userName = config.initialPage.querySelectorAll("input")[0].value;
-			let user = Controller.getUserData(userName);
-			if (user == null) alert("ユーザー情報がありません。新規作成してください");
-			Controller.moveInitialPageToMainPage(user);
+			if (userName == "") {
+				alert("名前を入力してください");
+			} else {
+				let user = Controller.getUserData(userName);
+				if (user == null) alert("ユーザー情報がありません。新規作成してください");
+				Controller.moveInitialPageToMainPage(user);
+			}
 		})
 	}
 	//ユーザーの生成
