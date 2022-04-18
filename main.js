@@ -44,7 +44,7 @@ class View {
 						<div class="flex justify-center">
 								<div class="py-5 w-1/2 ">
 						<div class="py-5 text-center">
-							<input type="text" placeholder="Enter your name" value="aoba">
+							<input type="text" placeholder="Enter your name">
 						</div>
 						<div class="flex justify-around">
 							<button id="newBtn" class="btn btn-success hover:text-white">NEW</button>
