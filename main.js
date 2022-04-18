@@ -245,8 +245,6 @@ class View {
 			container.querySelectorAll(".total")[0].innerHTML = `Total: ￥${total}`;
 		})
 
-
-
 		//戻るボタンを押した時の挙動
 		let backBtn = container.querySelectorAll("#back")[0];
 		backBtn.addEventListener("click", function () {
@@ -319,8 +317,12 @@ class Controller {
 				alert("名前を入力してください");
 			} else {
 				let user = Controller.getUserData(userName);
-				if (user == null) alert("ユーザー情報がありません。新規作成してください");
-				Controller.moveInitialPageToMainPage(user);
+				if (user == null) {
+					alert("ユーザー情報がありません。新規作成してください");
+				}
+				else {
+					Controller.moveInitialPageToMainPage(user);
+				}
 			}
 		})
 	}
