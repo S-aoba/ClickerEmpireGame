@@ -4,6 +4,7 @@ import { View } from "./view.js";
 
 
 
+
 export const config = {
 	"initialPage": document.getElementById("initialPage"),
 	"mainPage": document.getElementById("mainPage")
