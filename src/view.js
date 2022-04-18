@@ -18,7 +18,7 @@ export class View {
 						<div class="flex justify-center">
 								<div class="py-5 w-1/2 ">
 						<div class="py-5 text-center">
-							<input type="text" placeholder="Enter your name" value="aoba11">
+							<input type="text" placeholder="Enter your name" value="aoba">
 						</div>
 						<div class="flex justify-around">
 							<button id="newBtn" class="btn btn-success hover:text-white">NEW</button>
@@ -70,12 +70,32 @@ export class View {
 						</div>
 					</div>
 				</div>
-				<div class="row-span-5 flex justify-center items-center">
+				<div class="row-span-4 flex justify-center items-center">
 					<div class="h-1/2 w-1/2">
 						<img src="https://cdn.pixabay.com/photo/2014/04/02/17/00/burger-307648_960_720.png" id="burger">
 					</div>
 				</div>
+				<div class="row-span-1 text-right">
+					<button id="reset" class="btn btn-primary mx-2">RESET</button>
+					<button id="save" class="btn btn-primary">SAVE</button>
+				</div>
 			`
+		let burgerClick = container.querySelectorAll("#burger")[0];
+		burgerClick.addEventListener("click", function () {
+			Controller.updateByClickBurger(user);
+		})
+
+		let resetBtn = container.querySelectorAll("#reset")[0];
+		resetBtn.addEventListener("click", function () {
+			Controller.resetAllData(user);
+		})
+
+		let saveBtn = container.querySelectorAll("#save")[0];
+		saveBtn.addEventListener("click", function () {
+			Controller.saveUserData(user);
+			Controller.stopTimer();
+			Controller.initializePage();
+		})
 
 		return container;
 	}
@@ -125,12 +145,13 @@ export class View {
 						<div class="h-full flex justify-center items-center">
 							<div class="text-center">
 								<p class="text-3xl">${user.items[i].currentAmount}</p>
-								<p class="text-xl">￥${user.items[i].perMoney} / sec</p>
+								<p class="text-xl">￥${View.displayItemIncome(user.items[i], user.items[i].type)} / sec</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			`
+
 		}
 
 		let itemsList = container.querySelectorAll(".itemsList");
@@ -194,7 +215,7 @@ export class View {
 		let input = container.querySelectorAll("input")[0];
 		input.addEventListener("change", function () {
 			let inputAmount = input.value;
-			let total = Controller.getTotalPrice(user, user.items[index], inputAmount);
+			let total = Controller.getTotalPrice(user.items[index], inputAmount);
 			container.querySelectorAll(".total")[0].innerHTML = `Total: ￥${total}`;
 		})
 
@@ -203,15 +224,50 @@ export class View {
 		//戻るボタンを押した時の挙動
 		let backBtn = container.querySelectorAll("#back")[0];
 		backBtn.addEventListener("click", function () {
-			Controller.resetMainPage(user);
+			View.updateMainPage(user);
 		})
+
+		//購入ボタンを押した時の挙動
+		let purchaseBtn = container.querySelectorAll("#purchaseBtn")[0];
+		purchaseBtn.addEventListener("click", function () {
+			Controller.updatePurchaseItems(user, index, input.value);
+			View.updateMainPage(user);
+		})
+
+
+
 		return purchaseItemFrame.append(container);
+
+
+	}
+
+	static updateMainPage(user) {
+		config.mainPage.innerHTML = "";
+		config.mainPage.append(View.createMainPage(user));
+	}
+
+	static updateBurgerPage(user) {
+		config.mainPage.querySelectorAll("#burgerStatus")[0].innerHTML = "";
+		config.mainPage.querySelectorAll("#burgerStatus")[0].append(View.createBurgerStatus(user));
+
+	}
+
+	static updateUserInfo(user) {
+		config.mainPage.querySelectorAll("#userInfo")[0].innerHTML = "";
+		config.mainPage.querySelectorAll("#userInfo")[0].append(View.createUserInfo(user));
 	}
 
 	static displayMaxAmount(item) {
 		if (item.maxAmount == -1) return "∞";
 		return item.maxAmount;
 	}
+
+	static displayItemIncome(item, type) {
+		if (type == "investment") return item.perRate;
+		return item.perMoney;
+	}
+
+
 
 
 }

@@ -1669,6 +1669,43 @@ html {
   }
 }
 
+.alert {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b2, var(--b1)) / var(--tw-bg-opacity));
+  padding: 1rem;
+  border-radius: var(--rounded-box, 1rem);
+}
+
+.alert > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+@media (min-width: 768px) {
+  .alert {
+    flex-direction: row;
+  }
+
+  .alert > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(0px * var(--tw-space-y-reverse));
+  }
+}
+
+.alert > :where(*) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .avatar.placeholder > div {
   display: flex;
   align-items: center;
@@ -2116,12 +2153,6 @@ html {
   outline-offset: 2px;
 }
 
-.mockup-phone .display {
-  overflow: hidden;
-  border-radius: 40px;
-  margin-top: -25px;
-}
-
 @-webkit-keyframes progress-loading {
   50% {
     left: 107%;
@@ -2210,6 +2241,10 @@ html {
   grid-row: span 5 / span 5;
 }
 
+.row-span-4 {
+  grid-row: span 4 / span 4;
+}
+
 .my-5 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
@@ -2225,8 +2260,22 @@ html {
   margin-right: 1rem;
 }
 
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mb-3 {
   margin-bottom: 0.75rem;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .flex {
@@ -2245,12 +2294,12 @@ html {
   height: 100vh;
 }
 
-.h-1\/1 {
-  height: 95%;
-}
-
 .h-full {
   height: 100%;
+}
+
+.h-1\/1 {
+  height: 95%;
 }
 
 .h-1\/2 {
@@ -2273,12 +2322,12 @@ html {
   width: 100vw;
 }
 
-.w-9\/12 {
-  width: 75%;
-}
-
 .w-full {
   width: 100%;
+}
+
+.w-9\/12 {
+  width: 75%;
 }
 
 .w-1\/2 {
@@ -2287,6 +2336,10 @@ html {
 
 .w-11\/12 {
   width: 91.666667%;
+}
+
+.w-1\/5 {
+  width: 20%;
 }
 
 .grid-cols-2 {
@@ -2315,6 +2368,10 @@ html {
 
 .justify-center {
   justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 
 .justify-around {
@@ -2359,6 +2416,11 @@ html {
 .bg-amber-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(252 211 77 / var(--tw-bg-opacity));
+}
+
+.bg-red-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity));
 }
 
 .py-5 {
